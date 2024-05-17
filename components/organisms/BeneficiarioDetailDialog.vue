@@ -22,8 +22,8 @@
               </v-col>
 
               <v-col cols="12" md="2" sm="6">
-                <v-date-input prepend-icon="" prepend-inner-icon="$calendar" v-model="dataNascimento" clearable
-                  label="Nascimento" variant="outlined" hide-actions
+                <v-date-input prepend-icon="" prepend-inner-icon="$calendar" v-model="dataNascimento"
+                  v-maska:[dateOptions] clearable label="Nascimento" variant="outlined" hide-actions
                   @update:modelValue="updateDataNascimento"></v-date-input>
               </v-col>
 
@@ -123,6 +123,7 @@ const numero = ref();
 const formValid = ref(false)
 const cpfOptions = { mask: '###.###.###-##' };
 const cepOptions = { mask: '#####-###' };
+const dateOptions = { mask: '##/##/####' };
 
 const formCadastro = ref<any>({
   id: null,

@@ -15,11 +15,13 @@
     </v-data-table-server>
     <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
-        <v-card-title class="text-h5">confirma a exclusão do Beneficiario {{ selectedToDelete.nome }}?</v-card-title>
+        <v-card-title class="text-h5">Atenção</v-card-title>
+        <v-card-subtitle class="text-subtitle-1">Confirma a exclusão de {{ selectedToDelete?.nome
+          }}?</v-card-subtitle>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
+          <v-btn color="red-darken-1" variant="text" @click="closeDelete">Cancelar</v-btn>
+          <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">Confirmar</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -36,7 +38,7 @@ const { $services, $toast } = useNuxtApp();
 const emit = defineEmits(['edit'])
 
 const dialogDelete = ref(false)
-const selectedToDelete = ref()
+const selectedToDelete = ref<any | null>()
 const beneficiarios = ref<IBeneficiario[]>([]);
 const paginate = reactive<IPaginate>({ perPage: 10, page: 1 });
 const headers = ref([
@@ -110,6 +112,7 @@ const editItem = (item: any) => {
 
 const closeDelete = () => {
   dialogDelete.value = false
+  selectedToDelete.value = null
 }
 
 const isDelete = (item: any) => {
@@ -124,8 +127,9 @@ const deleteItemConfirm = () => {
     try {
       $services.beneficiarios.deleteBeneficiario(id)
       const index = beneficiarios.value.findIndex(item => item.id === id)
+      beneficiarios.value.splice(index)
+
       $toast.success('Beneficiario excluido com sucesso')
-      selectedToDelete.value = null
       closeDelete()
 
     } catch (error) {
