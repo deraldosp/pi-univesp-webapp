@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
+    "luxon": "^3.4.4",
     "maska": "^2.1.11",
     "nuxt": "^3.11.2",
     "vue": "^3.4.27",
@@ -18,6 +19,7 @@
     "vue3-toastify": "^0.2.1"
   },
   "devDependencies": {
+    "@types/luxon": "^3.4.2",
     "ofetch": "^1.3.4",
     "sass": "^1.77.0",
     "vite-plugin-vuetify": "^2.0.3",

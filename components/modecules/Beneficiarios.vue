@@ -10,9 +10,14 @@
         <v-icon class="me-2" size="small" title="Excluir Beneficiario" @click="isDelete(item)">
           mdi-delete
         </v-icon>
-        <v-icon size="small" title="Entregar Benefício" @click="() => { }">mdi-cart-heart</v-icon>
+        <v-icon size="small" title="Entregar Benefício" @click="entregarBeneficio(item)">mdi-cart-heart</v-icon>
+      </template>
+
+      <template v-slot:item.last_benefit.data_entrega="{ item }">
+        {{ item.last_benefit ? formatDate(item.last_benefit.data_entrega) : '' }}
       </template>
     </v-data-table-server>
+
     <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
         <v-card-title class="text-h5">Atenção</v-card-title>
@@ -27,15 +32,23 @@
       </v-card>
     </v-dialog>
   </v-container>
+
+  <EntregaBeneficio ref="dialogEntrega" @saved="updateItemBeneficiarios"></EntregaBeneficio>
 </template>
 
 <script lang="ts" setup>
 
 import type { IPaginate, IBeneficiario } from '../../services/beneficiarios/types';
 import { ref, onMounted, defineEmits } from 'vue'
+import EntregaBeneficio from './EntregaBeneficio.vue';
+import { DateTime } from 'luxon';
+
 const { $services, $toast } = useNuxtApp();
 
 const emit = defineEmits(['edit'])
+
+
+const dialogEntrega = ref<typeof EntregaBeneficio | null>(null)
 
 const dialogDelete = ref(false)
 const selectedToDelete = ref<any | null>()
@@ -46,7 +59,7 @@ const headers = ref([
   { title: 'Telefone', key: 'telefone', sortable: false },
   { title: 'Endereço', key: 'endereco', sortable: false },
   { title: 'Dependentes', key: 'numero_dependentes', sortable: false },
-  { title: 'Último Benefício', key: 'dataUltimoBeneficio', sortable: false },
+  { title: 'Último Benefício', key: 'last_benefit.data_entrega', sortable: false },
   { title: 'Ações', key: 'actions', sortable: false }
 ]);
 
@@ -140,6 +153,13 @@ const deleteItemConfirm = () => {
   }
 }
 
+const entregarBeneficio = (item: any) => {
+  console.log(dialogEntrega);
+
+  if (dialogEntrega.value) {
+    dialogEntrega.value.open(item)
+  }
+}
 
 
 onMounted(() => {

@@ -110,8 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, shallowRef, defineEmits } from 'vue';
-import Beneficiarios from '~/pages/beneficiarios.vue';
+import { ref, shallowRef, defineEmits } from 'vue';
 
 const { $services, $toast } = useNuxtApp();
 const emit = defineEmits(['saved', 'updated']);

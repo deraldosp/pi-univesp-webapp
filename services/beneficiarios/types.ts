@@ -21,7 +21,8 @@ export interface IBeneficiario {
   inicio_beneficio?: string;
   termino_beneficio?: string;
   total_beneficios_recebidos: number;
-  ultimo_beneficio?: string;
+  last_benefit?: any;
+  ultimo_beneficio?: any;
   created_by?: IUser;
   created_at?: string;
   updated_at?: string;
