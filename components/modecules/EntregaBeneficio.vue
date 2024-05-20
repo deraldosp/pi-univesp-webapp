@@ -96,7 +96,7 @@ const tiposBeneficio = [
 
 const cleanForm = () => {
   Object.keys(formBeneficio.value).forEach((key) => {
-    formBeneficio.value[key] = 0
+    formBeneficio.value[key] = null
   })
 }
 

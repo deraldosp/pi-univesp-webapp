@@ -16,6 +16,15 @@
       <template v-slot:item.last_benefit.data_entrega="{ item }">
         {{ item.last_benefit ? formatDate(item.last_benefit.data_entrega) : '' }}
       </template>
+
+      <template v-slot:tfoot>
+        <tr>
+          <td>
+            <v-text-field v-model="search" class="ma-2" density="compact" placeholder="Buscar beneficiario..."
+              hide-details clearable></v-text-field>
+          </td>
+        </tr>
+      </template>
     </v-data-table-server>
 
     <v-dialog v-model="dialogDelete" max-width="500px">
@@ -39,9 +48,10 @@
 <script lang="ts" setup>
 
 import type { IPaginate, IBeneficiario } from '../../services/beneficiarios/types';
-import { ref, onMounted, defineEmits } from 'vue'
+import { ref, onMounted, defineEmits, watch } from 'vue'
 import EntregaBeneficio from './EntregaBeneficio.vue';
-import { DateTime } from 'luxon';
+import { debounce } from 'lodash'
+
 
 const { $services, $toast } = useNuxtApp();
 
@@ -50,6 +60,8 @@ const emit = defineEmits(['edit'])
 
 const dialogEntrega = ref<typeof EntregaBeneficio | null>(null)
 
+
+const search = ref('')
 const dialogDelete = ref(false)
 const selectedToDelete = ref<any | null>()
 const beneficiarios = ref<IBeneficiario[]>([]);
@@ -69,7 +81,7 @@ const loading = ref(false);
 const page = ref<number>(1)
 
 
-const loadBeneficiarios = async (paginate: IPaginate) => {
+const loadBeneficiarios = async (paginate: IPaginate, search?: string) => {
   try {
     loading.value = true
     const {
@@ -77,7 +89,7 @@ const loadBeneficiarios = async (paginate: IPaginate) => {
       per_page,
       total,
       current_page
-    } = await $services.beneficiarios.getBeneficiarios(paginate);
+    } = await $services.beneficiarios.getBeneficiarios(paginate, search);
 
     beneficiarios.value = data;
     itemsPerPage.value = per_page;
@@ -154,12 +166,19 @@ const deleteItemConfirm = () => {
 }
 
 const entregarBeneficio = (item: any) => {
-  console.log(dialogEntrega);
-
   if (dialogEntrega.value) {
     dialogEntrega.value.open(item)
   }
 }
+
+const onSearch = debounce(function (newValue: string) {
+  loadBeneficiarios({ perPage: 10, page: 1 }, newValue)
+}, 400)
+
+
+watch(search, (value: string) => {
+  onSearch(value)
+})
 
 
 onMounted(() => {

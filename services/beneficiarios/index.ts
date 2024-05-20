@@ -10,12 +10,16 @@ export default class BeneficiarioService {
     this.fetch = fetch
   }
 
-  async getBeneficiarios(paginate: IPaginate = { perPage: 10, page: 1 }) {
+  async getBeneficiarios(paginate: IPaginate = { perPage: 10, page: 1 }, search?: string) {
+
+    const withSearch = search ? { search: `nome|${search}` } : {};
+
     const result = await this.fetch<IServiceLaravelPaginate>('/beneficiario', {
       method: 'GET',
       query: {
         perpage: paginate.perPage,
-        page: paginate.page
+        page: paginate.page,
+        ...withSearch
       }
     })
     return result
