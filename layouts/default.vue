@@ -53,6 +53,11 @@ const items = [
     value: '/beneficiarios',
     icon: 'mdi-account-group'
   },
+  {
+    title: 'Doadores',
+    value: '/doadores',
+    icon: 'mdi-account-heart'
+  }
   // {
   //   title: 'Unidades Beneficentes',
   //   value: '/unidades',

@@ -1,12 +1,14 @@
 import BeneficiarioService from "~/services/beneficiarios";
 import AuthService from '../services/auth/index';
-import DistribuicaoService from "~/services/deistribuicao";
+import DistribuicaoService from "~/services/distribuicao";
+import DoadoresService from "~/services/doadores";
 
 
 interface IHttp {
   beneficiarios: BeneficiarioService,
   auth: AuthService,
   distribuicao: DistribuicaoService,
+  doadores: DoadoresService,
   // adicionar novos serviços aqui
 }
 
@@ -28,7 +30,8 @@ export default defineNuxtPlugin(({ $config }) => {
   const httpServices: IHttp = {
     beneficiarios: new BeneficiarioService(fetcher),
     auth: new AuthService(fetcher),
-    distribuicao: new DistribuicaoService(fetcher)
+    distribuicao: new DistribuicaoService(fetcher),
+    doadores: new DoadoresService(fetcher)
     // instanciar novos serviços aqui
   }
 

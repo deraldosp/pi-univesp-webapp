@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, shallowRef, defineEmits } from 'vue';
-import type { IDistribuicao } from '~/services/deistribuicao/types';
+import type { IDistribuicao } from '~/services/distribuicao/types';
 
 const { $services, $toast } = useNuxtApp();
 const emit = defineEmits(['saved', 'updated']);
