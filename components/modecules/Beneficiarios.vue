@@ -1,48 +1,50 @@
 <template>
-  <v-container fluid>
-    <v-data-table-server v-model:items-per-page="itemsPerPage" :headers="headers" :items="beneficiarios"
-      :items-length="totalItems" :loading="loading" item-value="name" :fixed-header="true" @update:options="loadItems"
-      height="72vh">
-      <template v-slot:item.actions="{ item }">
-        <v-icon class="me-2" size="small" title="Editar Beneficiário" @click="editItem(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon class="me-2" size="small" title="Excluir Beneficiario" @click="isDelete(item)">
-          mdi-delete
-        </v-icon>
-        <v-icon size="small" title="Entregar Benefício" @click="entregarBeneficio(item)">mdi-cart-heart</v-icon>
-      </template>
-
-      <template v-slot:item.last_benefit.data_entrega="{ item }">
-        {{ item.last_benefit ? formatDate(item.last_benefit.data_entrega) : '' }}
-      </template>
-
-      <template v-slot:tfoot>
-        <tr>
-          <td>
-            <v-text-field v-model="search" class="ma-2" density="compact" placeholder="Buscar beneficiario..."
-              hide-details clearable></v-text-field>
-          </td>
-        </tr>
-      </template>
-    </v-data-table-server>
-
-    <v-dialog v-model="dialogDelete" max-width="500px">
-      <v-card>
-        <v-card-title class="text-h5">Atenção</v-card-title>
-        <v-card-subtitle class="text-subtitle-1">Confirma a exclusão de {{ selectedToDelete?.nome
-          }}?</v-card-subtitle>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red-darken-1" variant="text" @click="closeDelete">Cancelar</v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">Confirmar</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-container>
-
-  <EntregaBeneficio ref="dialogEntrega" @saved="updateItemBeneficiarios"></EntregaBeneficio>
+  <ClientOnly>
+    <v-container fluid>
+      <v-data-table-server v-model:items-per-page="itemsPerPage" :headers="headers" :items="beneficiarios"
+        :items-length="totalItems" :loading="loading" item-value="name" :fixed-header="true" @update:options="loadItems"
+        height="72vh">
+        <template v-slot:item.actions="{ item }">
+          <v-icon class="me-2" size="small" title="Editar Beneficiário" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon class="me-2" size="small" title="Excluir Beneficiario" @click="isDelete(item)">
+            mdi-delete
+          </v-icon>
+          <v-icon size="small" title="Entregar Benefício" @click="entregarBeneficio(item)">mdi-cart-heart</v-icon>
+        </template>
+  
+        <template v-slot:item.last_benefit.data_entrega="{ item }">
+          {{ item.last_benefit ? formatDate(item.last_benefit.data_entrega) : '' }}
+        </template>
+  
+        <template v-slot:tfoot>
+          <tr>
+            <td>
+              <v-text-field v-model="search" class="ma-2" density="compact" placeholder="Buscar beneficiario..."
+                hide-details clearable></v-text-field>
+            </td>
+          </tr>
+        </template>
+      </v-data-table-server>
+  
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card>
+          <v-card-title class="text-h5">Atenção</v-card-title>
+          <v-card-subtitle class="text-subtitle-1">Confirma a exclusão de {{ selectedToDelete?.nome
+            }}?</v-card-subtitle>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="red-darken-1" variant="text" @click="closeDelete">Cancelar</v-btn>
+            <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">Confirmar</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-container>
+  
+    <EntregaBeneficio ref="dialogEntrega" @saved="updateItemBeneficiarios"></EntregaBeneficio>
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>
@@ -106,7 +108,7 @@ const loadBeneficiarios = async (paginate: IPaginate, search?: string) => {
 
 // Função para formatar a data
 const formatDate = (dateString: any) => {
-  const date = new Date(dateString);
+  const date = new Date(`${dateString} 00:00:00`);
   return date.toLocaleDateString('pt-BR');
 };
 

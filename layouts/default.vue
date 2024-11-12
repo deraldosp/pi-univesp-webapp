@@ -4,18 +4,9 @@
       <v-layout>
         <v-app-bar color="primary" prominent>
           <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
           <v-toolbar-title>Caritas - Sistema de controle de doações</v-toolbar-title>
-
           <v-spacer></v-spacer>
-
-          <!-- <template v-if="$vuetify.display.mdAndUp">
-            <v-btn icon="mdi-magnify" variant="text"></v-btn>
-
-            <v-btn icon="mdi-filter" variant="text"></v-btn>
-          </template>
-
-<v-btn icon="mdi-dots-vertical" variant="text"></v-btn> -->
+          <v-btn icon="mdi-logout" title="Sair" @click="logout()" variant="text"></v-btn>
         </v-app-bar>
 
         <v-navigation-drawer v-model="drawer" :location="$vuetify.display.mobile ? 'bottom' : undefined" temporary>
@@ -35,12 +26,13 @@
         </v-main>
       </v-layout>
     </v-card>
-
   </v-app>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
+
+const { $services, $router } = useNuxtApp();
 
 const items = [
   {
@@ -71,11 +63,25 @@ const items = [
   //   value: '/admin',
   // },
 ]
-
 const drawer = ref(false)
 const group = ref(null)
 
 watch(group, () => {
   drawer.value = false
 })
+
+const clearSession = () => {
+  localStorage.removeItem('auth')
+  localStorage.removeItem('token')
+}
+
+const logout = () => {
+  $services.auth.logout().then(() => {
+    clearSession()
+    $router.push('/login')
+  }).catch(() => {
+    clearSession()
+    $router.push('/login')
+  })
+}
 </script>

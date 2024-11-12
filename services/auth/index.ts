@@ -16,4 +16,11 @@ export default class AuthService {
     return result
   }
 
+  async logout() {
+    const result = await this.fetch('/logout', {
+      method: 'POST',
+    })
+    return result
+  }
+
 }

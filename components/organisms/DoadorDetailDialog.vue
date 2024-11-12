@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, shallowRef, defineEmits, computed } from 'vue';
+import { reactive, ref, computed } from 'vue';
 import type { IDoador } from '~/services/doadores/types';
 
 const { $services, $toast } = useNuxtApp();
@@ -92,7 +92,7 @@ const cpfOptions = { mask: '###.###.###-##' };
 const cnpjOptions = { mask: '##.###.###/####-61' };
 const cepOptions = { mask: '#####-###' };
 
-let formCadastro = reactive<IDoador>({
+let formCadastro = ref<IDoador>({
   id: null,
   nome: '',
   razao_social: '',
@@ -107,7 +107,7 @@ let formCadastro = reactive<IDoador>({
 });
 
 const cnpjCpfOptions = computed(() => {
-  return formCadastro.cnpj_cpf.length > 14 ? cnpjOptions : cpfOptions
+  return formCadastro?.value.cnpj_cpf?.length > 14 ? cnpjOptions : cpfOptions
 })
 
 const rules = {
@@ -130,24 +130,15 @@ const rules = {
 }
 
 const cleanForm = () => {
-  formCadastro = {
-    id: null,
-    nome: '',
-    razao_social: '',
-    cnpj_cpf: '',
-    telefone: '',
-    endereco: '',
-    bairro: '',
-    cidade: '',
-    uf: '',
-    cep: '',
-    email: '',
-    };
+  Object.keys(formCadastro.value).forEach((key) => {
+    const dinamicKey = key as keyof IDoador
+    formCadastro.value[dinamicKey] = null
+  })
 }
 
 const save = async () => {
   if (formValid.value) {
-    const formDoador = JSON.parse(JSON.stringify(formCadastro))
+    const formDoador = JSON.parse(JSON.stringify(formCadastro.value))
     let result
     try {
       loading.value = true
@@ -171,8 +162,9 @@ const save = async () => {
 }
 
 const populateFormFromItem = (item: any) => {
-  Object.keys(formCadastro).forEach(key => {
-    formCadastro[key as keyof IDoador] = item[key as keyof IDoador]
+  Object.keys(formCadastro.value).forEach(key => {
+    const dinamicKey = key as keyof IDoador
+    formCadastro.value[dinamicKey] = item[dinamicKey]
   })
 }
 
@@ -190,9 +182,9 @@ const close = () => {
 };
 
 const searchCep = async () => {
-  if (formCadastro.cep.replace('-', '').length === 8) {
+  if (formCadastro.value.cep.replace('-', '').length === 8) {
     try {
-      const result = await $fetch<any>(`https://viacep.com.br/ws/${formCadastro.cep}/json/`)
+      const result = await $fetch<any>(`https://viacep.com.br/ws/${formCadastro.value.cep}/json/`)
       if (result.erro) return
 
       populateAddress(result)
@@ -203,10 +195,10 @@ const searchCep = async () => {
 }
 
 const populateAddress = (data: any): void => {
-  formCadastro.endereco = data.logradouro
-  formCadastro.bairro = data.bairro
-  formCadastro.cidade = data.localidade
-  formCadastro.uf = data.uf
+  formCadastro.value.endereco = data.logradouro
+  formCadastro.value.bairro = data.bairro
+  formCadastro.value.cidade = data.localidade
+  formCadastro.value.uf = data.uf
 }
 
 defineExpose({ open, close, cleanForm });

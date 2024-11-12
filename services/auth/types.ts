@@ -8,7 +8,7 @@ export interface IAuthToken {
 }
 
 export interface IAuth {
-  data: IAuthToken
+  data: IAuthToken;
 }
 
 export interface ICredentials {

@@ -8,7 +8,7 @@
       </v-btn>
     </v-toolbar>
 
-    <Doadores ref="tableDoadores" @edit="editBeneficiario"></Doadores>
+    <Doadores ref="tableDoadores" @edit="editDoador"></Doadores>
     <DoadorDetailDialog ref="bfDialogComponent" @saved="addDoador" @updated="updateDoador" />
   </div>
 </template>
@@ -34,11 +34,11 @@ const openModalDoador = (): void => {
 
 const addDoador = (doador: IDoador): void => {
   if (tableDoadores.value) {
-    tableDoadores.value.addItemBeneficiarios(doador)
+    tableDoadores.value.addItemDoador(doador)
   }
 }
 
-const editBeneficiario = (doador: any): void => {
+const editDoador = (doador: any): void => {
   if (bfDialogComponent.value) {
     bfDialogComponent.value.open(doador)
   }
@@ -46,7 +46,7 @@ const editBeneficiario = (doador: any): void => {
 
 const updateDoador = (doador: IDoador): void => {
   if (tableDoadores.value) {
-    tableDoadores.value.updateItemBeneficiarios(doador)
+    tableDoadores.value.updateItemDoador(doador)
   }
 }
 

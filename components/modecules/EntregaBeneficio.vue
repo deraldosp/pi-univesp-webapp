@@ -8,13 +8,13 @@
           <v-card-text>
             <v-row dense>
               <v-col cols="12">
-                <v-select v-model="formBeneficio.unidade_id" label="Unidade" item-title="name" item-value="id"
+                <v-select v-model="formBeneficio.unidade_id" label="Unidade" item-title="nome" item-value="id"
                   :items="unidades"></v-select>
               </v-col>
 
               <v-col cols="12">
-                <v-select v-model="formBeneficio.tipo_beneficio_id" label="Tipo Benefício" item-title="name"
-                  item-value="id" :items="tiposBeneficio"></v-select>
+                <v-select v-model="formBeneficio.tipo_beneficio_id" label="Tipo Benefício" item-title="tipo_beneficio"
+                  item-value="id" :items="beneficios"></v-select>
               </v-col>
 
 
@@ -49,18 +49,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, shallowRef, defineEmits } from 'vue';
+import { ref, reactive, onMounted, defineEmits } from 'vue';
 import type { IDistribuicao } from '~/services/distribuicao/types';
 
 const { $services, $toast } = useNuxtApp();
 const emit = defineEmits(['saved', 'updated']);
 
 const beneficiarioSelected = ref(null)
-const dataNascimento = shallowRef(null)
 const loading = ref(false)
-const dialog = ref(false);
-const numero = ref();
+const dialog = ref(false)
+const beneficios = ref([])
 const formValid = ref(false)
+const unidades = ref([])
 
 const formBeneficio = ref<IDistribuicao>({
   beneficiario_id: null,
@@ -78,25 +78,40 @@ const rules = {
   ]
 }
 
-const unidades = [
-  {
-    id: 1,
-    name: 'Perus'
+const listaUnidades = async () => {
+  const entidade = localStorage.getItem('auth')? Number(JSON.parse(localStorage.getItem('auth') as string).user?.entidade_id) : 999 
+  try {
+    loading.value = true
+    const result = await $services.commons.listaUnidadesPorEntidade(entidade)
+    unidades.value = result
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = false
   }
-]
+}
 
-const tiposBeneficio = [
-  {
-    id: 1,
-    name: 'Cesta Básica média'
+const listaBeneficios = async () => {
+  try {
+    loading.value = true
+    const result = await $services.commons.listaBeneficios()
+    beneficios.value = result
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = false
   }
+}
 
-]
-
+onMounted(() => {
+  listaUnidades()
+  listaBeneficios()
+})
 
 const cleanForm = () => {
   Object.keys(formBeneficio.value).forEach((key) => {
-    formBeneficio.value[key] = null
+    const dinamicKey = key as keyof IDistribuicao
+    formBeneficio.value[dinamicKey] = null
   })
 }
 
