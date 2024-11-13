@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, defineEmits } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import type { IDistribuicao } from '~/services/distribuicao/types';
 
 const { $services, $toast } = useNuxtApp();

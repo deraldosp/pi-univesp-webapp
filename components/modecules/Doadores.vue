@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 
 import type { IPaginate, IDoador } from '../../services/doadores/types';
-import { ref, onMounted, defineEmits, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import EntregaDoacao from './EntregaDoacao.vue';
 import { debounce } from 'lodash'
 

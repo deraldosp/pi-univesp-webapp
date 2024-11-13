@@ -16,7 +16,7 @@
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",
     "maska": "^2.1.11",
-    "nuxt": "^3.11.2",
+    "nuxt": "^3.14.159",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
     "vue3-toastify": "^0.2.1"
@@ -26,6 +26,6 @@
     "ofetch": "^1.3.4",
     "sass": "^1.77.0",
     "vite-plugin-vuetify": "^2.0.3",
-    "vuetify": "^3.6.4"
+    "vuetify": "^3.7.4"
   }
 }

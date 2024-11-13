@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 
 import type { IPaginate, IBeneficiario } from '../../services/beneficiarios/types';
-import { ref, onMounted, defineEmits, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import EntregaBeneficio from './EntregaBeneficio.vue';
 import { debounce } from 'lodash'
 
