@@ -3,22 +3,15 @@
     <v-card>
       <v-layout>
         <v-app-bar color="primary" prominent>
-          <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon variant="text" @click.stop="toggle()"></v-app-bar-nav-icon>
           <v-toolbar-title>Caritas - Sistema de controle de doações</v-toolbar-title>
           <v-spacer></v-spacer>
+          <span class="mr-3">{{ user.name }}</span>
           <v-btn icon="mdi-logout" title="Sair" @click="logout()" variant="text"></v-btn>
         </v-app-bar>
 
-        <v-navigation-drawer v-model="drawer" :location="$vuetify.display.mobile ? 'bottom' : undefined" temporary>
-          <v-list :activatable="true">
-            <NuxtLink :key="index" style="text-decoration: none;" :to="item.value" v-for="(item, index) in items">
-              <v-list-item :prepend-icon="item.icon">
-                {{ item.title }}
-              </v-list-item>
-            </NuxtLink>
-          </v-list>
-        </v-navigation-drawer>
-
+        <NavigationMenu ref="menuNav" />
+    
         <v-main style="height: 100vh;">
           <v-card-text>
             <slot />
@@ -29,10 +22,14 @@
   </v-app>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue'
+<script setup lang="ts">
+import { ref, watch, onMounted } from 'vue'
+import NavigationMenu from '~/components/organisms/NavigationMenu.vue';
 
 const { $services, $router } = useNuxtApp();
+const user = ref({})
+const menuNav = ref<typeof NavigationMenu | null>(null)
+
 
 const items = [
   {
@@ -69,6 +66,16 @@ const group = ref(null)
 watch(group, () => {
   drawer.value = false
 })
+
+onMounted(() => {
+  user.value = JSON.parse(localStorage.getItem('auth') || '{}').user
+})
+
+const toggle = () => {
+  if (menuNav.value) {
+    menuNav.value.toggleDrawer()
+  }
+}
 
 const clearSession = () => {
   localStorage.removeItem('auth')

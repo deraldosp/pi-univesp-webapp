@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import type { IDoador } from '~/services/doadores/types';
 
 const { $services, $toast } = useNuxtApp();

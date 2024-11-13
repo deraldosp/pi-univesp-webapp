@@ -32,8 +32,12 @@ const login = () => {
   loading.value = true
   $services.auth.login({ email: email.value, password: password.value })
     .then((res: IAuth) => {
-      localStorage.setItem('auth', JSON.stringify(res.data))
+      const auth = res.data
+      auth.expires_in = new Date().getTime() + auth.expires_in * 1000
+
+      localStorage.setItem('auth', JSON.stringify(auth))
       localStorage.setItem('token', res.data.access_token)
+      
       loading.value = false
       router.push('/');
     })
