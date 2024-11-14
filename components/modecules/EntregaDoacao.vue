@@ -1,6 +1,6 @@
 <template>
     <div class="pa-4 text-center">
-    <v-dialog v-model="dialog" max-width="500">
+    <v-dialog v-model="dialog" max-width="500" persistent>
 
       <v-card prepend-icon="mdi-account" title="Doação">
         <v-form @submit.prevent="save()" v-model="formValid">
@@ -10,6 +10,11 @@
               <v-col cols="12">
                 <v-select v-model="formEntregaDoacao.tipo_doacao_id" label="Tipo de Doação" item-title="nome"
                   :rules="rules.obrigatorio" item-value="id" :items="tiposDoacoes"></v-select>
+              </v-col>
+
+              <v-col cols="12">
+                <v-select v-model="formEntregaDoacao.unidade_id" label="Unidade" item-title="nome" item-value="id"
+                  :rules="rules.obrigatorio"  :items="unidades"></v-select>
               </v-col>
 
               <v-col cols="12" md="6">
@@ -23,7 +28,12 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <!-- Este espaço está vazio. Adicione conteúdo se necessário. -->
+                <v-switch
+                  v-model="formEntregaDoacao.judicial"
+                  :label="`Decisão Judicial: ${formEntregaDoacao.judicial ? 'Sim' : 'Não'}`"
+                  color="primary"
+                  hide-details
+                ></v-switch>
               </v-col>
             </v-row>
 
@@ -49,21 +59,25 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type { ITipoDoacao } from '~/services/commons/types';
+import type { InputDoacao, ITipoDoacao } from '~/services/commons/types';
+import type { IDoador } from '~/services/doadores/types';
 
 const { $services, $toast } = useNuxtApp();
 const emit = defineEmits(['saved', 'updated']);
 
-const doadorSelected = ref(null)
+const doadorSelected = ref(0)
 const dialog = ref(false)
 const formValid = ref(false)
 const loading = ref(false)
 const tiposDoacoes = ref([])
 const loadingTiposDoacoes = ref(false)
+const unidades = ref([])
 const formEntregaDoacao = ref<any>({
   tipo_doacao_id: null,
+  unidade_id: null,
   quantidade: null,
   valor: null,
+  judicial: false,
   observacao: null
 })
 
@@ -90,13 +104,38 @@ const loadTiposDoacoes = async () => {
   }
 }
 
+const listaUnidades = async () => {
+  const entidade = localStorage.getItem('auth')? Number(JSON.parse(localStorage.getItem('auth') as string).user?.entidade_id) : 999 
+  try {
+    loading.value = true
+    const result = await $services.commons.listaUnidadesPorEntidade(entidade)
+    unidades.value = result
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = false
+  }
+}
+
 onMounted(() => {
   loadTiposDoacoes()
 })
 
 const save = async () => {
   if (formValid.value) {
-    console.log(formEntregaDoacao.value);
+    try {
+      const input: InputDoacao = {
+        ...formEntregaDoacao.value,
+        doador_id: doadorSelected.value 
+      }
+      const data = await $services.commons.registraDoacao(input)
+      $toast.success('Entrega de doação gravada com sucesso')
+      emit('saved', data)
+      close()
+    } catch (e) {
+      $toast.error('Ocorreu um erro ao gravar a entrega de doação')
+      console.error(e)
+    }
   }
 }
 
@@ -106,16 +145,20 @@ const cleanForm = () => {
   })
 }
 
-const open = (doador?: any) => {
-  doadorSelected.value = doador
-  formEntregaDoacao.value.beneficiario_id = doador.id
+const open = (doador_id: number) => {
+  if (unidades.value.length === 0) {
+    listaUnidades()
+  }
+  doadorSelected.value = doador_id
+  formEntregaDoacao.value.doador_id = doador_id
   dialog.value = true;
 
 };
 
 const close = () => {
   cleanForm()
-  dialog.value = false;
+  doadorSelected.value = 0
+  dialog.value = false
 };
 
 defineExpose({ open, close });

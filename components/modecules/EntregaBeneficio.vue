@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4 text-center">
-    <v-dialog v-model="dialog" max-width="500">
+    <v-dialog v-model="dialog" max-width="500" persistent>
 
       <v-card prepend-icon="mdi-account" title="Entrega de Beneficio">
         <v-form @submit.prevent="save()" v-model="formValid">
@@ -118,7 +118,6 @@ const cleanForm = () => {
 
 const save = async () => {
   if (formValid.value) {
-    // const formEntrega = JSON.parse(JSON.stringify(formBeneficio.value))
     let result
     try {
       loading.value = true

@@ -1,6 +1,6 @@
 import type { $Fetch } from 'ofetch';
 import type { IServiceLaravelPaginate } from '../types';
-import type { IPaginate } from './types';
+import type { InputDoacao, IPaginate } from './types';
 
 
 export default class CommonsService {
@@ -27,6 +27,14 @@ export default class CommonsService {
   async listaBeneficios() {
     const result = await this.fetch('/beneficios', {
       method: 'GET'
+    })
+    return result
+  }
+
+  async registraDoacao(data: InputDoacao) {
+    const result = await this.fetch('/doacao', {
+      method: 'POST',
+      body: JSON.stringify(data)
     })
     return result
   }

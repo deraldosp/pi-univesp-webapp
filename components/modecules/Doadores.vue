@@ -14,8 +14,8 @@
           <v-icon size="small" title="Registrar Doação" @click="registrarDoacao(item)">mdi-hand-coin</v-icon>
         </template>
   
-        <template v-slot:item.last_benefit.data_entrega="{ item }">
-          {{ item.last_benefit ? formatDate(item.last_benefit.data_entrega) : '' }}
+        <template v-slot:item.data_ult_doacao="{ item }">
+          {{ item.data_ult_doacao ? formatDate(`${item.data_ult_doacao} 00:00:00`) : '' }}
         </template>
   
         <template v-slot:tfoot>
@@ -73,6 +73,7 @@ const headers = ref([
   { title: 'Razão Social', key: 'razao_social', sortable: false },
   { title: 'Telefone', key: 'telefone', sortable: false },
   { title: 'Endereço', key: 'endereco', sortable: false },
+  { title: 'Data Últ. Doação', key: 'data_ult_doacao', sortable: false },
   { title: 'Ações', key: 'actions', sortable: false }
 ]);
 
@@ -168,7 +169,7 @@ const deleteItemConfirm = () => {
 
 const registrarDoacao = (item: any) => {
   if (dialogEntrega.value) {
-    dialogEntrega.value.open(item)
+    dialogEntrega.value.open(item.id)
   }
 }
 
