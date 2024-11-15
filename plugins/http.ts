@@ -15,7 +15,7 @@ interface IHttp {
 }
 
 export default defineNuxtPlugin(({ $config }) => {
-
+  console.log('@@@', $config.public.apiBase)
   const fetcher = $fetch.create({
     baseURL: $config.public.apiBase,
     onRequest({ request, options }) {
