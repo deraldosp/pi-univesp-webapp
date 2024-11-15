@@ -17,7 +17,7 @@ interface IHttp {
 export default defineNuxtPlugin(({ $config }) => {
   console.log('@@@', $config.public.apiBase)
   const fetcher = $fetch.create({
-    baseURL: $config.public.apiBase,
+    baseURL: 'https://caritas-api-htdggqfnaaegaefx.brazilsouth-01.azurewebsites.net/api',
     onRequest({ request, options }) {
       const authHeader = { Authorization: `Bearer ${localStorage.getItem('token') ?? 'xyz'}` };
       const headers = {
