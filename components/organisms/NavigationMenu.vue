@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" :location="$vuetify.display.mobile ? 'bottom' : undefined" temporary>
+    <v-navigation-drawer v-model="drawer" temporary>
       <v-list :activatable="true">
         <NuxtLink :key="index" style="text-decoration: none;" :to="item.value" v-for="(item, index) in items">
           <v-list-item :prepend-icon="item.icon">
