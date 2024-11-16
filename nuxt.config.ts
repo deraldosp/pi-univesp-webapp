@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     apiSecret: '123',
     // Keys within public are also exposed client-side
     public: {
-      apiBase: import.meta.env.VITE_API_BASE_URL,
+      apiBase: import.meta.env.API_BASE_URL,
     }
   },
 
