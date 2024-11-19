@@ -52,7 +52,7 @@
 import type { IPaginate, IDoador } from '../../services/doadores/types';
 import { ref, onMounted, watch } from 'vue'
 import EntregaDoacao from './EntregaDoacao.vue';
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 
 
 const { $services, $toast } = useNuxtApp();
