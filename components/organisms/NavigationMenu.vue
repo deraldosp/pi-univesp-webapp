@@ -23,6 +23,11 @@ const items = ref([
     icon: 'mdi-home'
   },
   {
+    title: 'Dashboard',
+    value: '/dashboard',
+    icon: 'mdi-chart-pie'
+  },
+  {
     title: 'Beneficiarios',
     value: '/beneficiarios',
     icon: 'mdi-account-group'
