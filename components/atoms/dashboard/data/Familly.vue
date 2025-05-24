@@ -19,7 +19,7 @@
             <div class="text-h6 mb-1">
               Média de membros por família
             </div>
-            <div class="text-h6">2.8</div>
+            <div class="text-h6">3.6</div>
           </div>
         </v-card-item>
 
