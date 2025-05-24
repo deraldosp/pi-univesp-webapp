@@ -12,9 +12,11 @@
 
         <NavigationMenu ref="menuNav" />
     
-        <v-main style="height: 100vh;">
+        <v-main style="height: 100vh; overflow: auto;">
           <v-card-text>
+            <v-container fluid style="min-width: 1300px;">
             <slot />
+            </v-container>
           </v-card-text>
         </v-main>
       </v-layout>

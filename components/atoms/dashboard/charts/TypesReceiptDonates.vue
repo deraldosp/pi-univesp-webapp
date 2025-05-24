@@ -1,22 +1,20 @@
 <template>
-  <ClientOnly>
-    <div>
-      <h2 class="text-2xl font-bold mb-4">Tipos Doações Recebidas</h2>
-      <apexchart
-        :key="series"
-        height="280"
-        width="100%"
-        :options="options"
-        :series="series"
-      ></apexchart>
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        @click="updateChart"
-      >
-        Change
-      </button>
-    </div>
-  </ClientOnly>
+  <div>
+    <h4 class="text-2xl font-bold mb-4">Tipos Doações Recebidas - Nossa Senhora de Fátima - Vila Bonilha</h4>
+    <apexchart
+      :key="series"
+      height="260"
+      width="100%"
+      :options="options"
+      :series="series"
+    ></apexchart>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      @click="updateChart"
+    >
+      Change
+    </button>
+  </div>
   </template>
   <script setup lang="ts">
   const options = ref<any>({

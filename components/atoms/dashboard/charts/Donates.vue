@@ -1,10 +1,10 @@
 <template>
   <ClientOnly>
     <div>
-      <h2 class="text-2xl font-bold mb-4">Doações Entregues</h2>
+      <h4 class="text-2xl font-bold mb-4">Doações Entregues - Nossa Senhora de Fátima - Vila Bonilha</h4>
       <apexchart
         :key="series"
-        height="300"
+        height="260"
         width="100%"
         :options="options"
         :series="series"
@@ -38,7 +38,7 @@
     options.value = {
       ...options.value,
       xaxis: {
-        categories: ["Jan", "Fev", "Mar", "Abr", "Mai"],
+        categories: ["Jan/25", "Fev/25", "Mar/25", "Abr/25", "Mai/25"],
       },
       colors: ['#13a425']
     };
