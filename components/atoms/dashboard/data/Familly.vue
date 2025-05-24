@@ -12,9 +12,9 @@
         <v-card-item>
           <div>
             <div class="text-h6 mb-1">
-              Famílias atendidas
+              Famílias atendidas - Decanato Santa Isabel e São Zacarias
             </div>
-            <div class="text-h6 mb-3">25</div>
+            <div class="text-h6 mb-3">180</div>
 
             <div class="text-h6 mb-1">
               Média de membros por família
